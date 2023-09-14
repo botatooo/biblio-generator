@@ -1,4 +1,5 @@
-import { extract } from '@extractus/article-extractor';
+import { Readability } from '@mozilla/readability';
+import { JSDOM } from "jsdom";
 import { NextResponse } from 'next/server';
 
 // export const runtime = 'edge';
@@ -15,28 +16,26 @@ const jsonResponse = (data: any, options: ResponseInit = { status: 200 }) => Nex
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const url = searchParams.getAll('url');
-  if (!url) {
+  const links = searchParams.getAll('url');
+  if (!links || links.length === 0) {
     return jsonResponse({ error: 'Missing url parameter' }, { status: 400 });
   }
 
-  const articles = await Promise.all(url.map(async (url) => {
-    const article = await extract(url, undefined, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0"
-      }
-    }).catch((err) => {
-      console.error(err);
+  const articles = await Promise.all(links.map(async (url) => {
+    const dom = await JSDOM.fromURL(url);
+    const data = new Readability(dom.window.document).parse();
+
+    if (!data) {
       return null;
-    });
-    return article;
+    }
+
+    return {
+      author: data.byline,
+      siteName: data.siteName,
+      title: data.title,
+      url,
+    };
   }));
 
-  return jsonResponse(articles.map((article) => (
-    article ? {
-      author: article.author,
-      title: article.title,
-      url: article.url,
-    } : null
-  )));
+  return jsonResponse(articles.filter(Boolean));
 }
