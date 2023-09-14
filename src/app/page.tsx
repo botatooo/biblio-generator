@@ -41,7 +41,9 @@ export default function Home() {
   return (
     <div className="grid grid-rows-2 lg:grid-cols-2 gap-8 w-full min-w-fit">
       <div className="border-neutral-300 rounded-md border p-4 max-w-full">
-        <h2 className="text-center font-bold underline">Bibliographie</h2>
+        <h2 className="text-center font-bold underline leading-relaxed">
+          Bibliographie
+        </h2>
         <ul className="pl-6 list-disc">
           {biblio.map((source, index) => (
             <li key={index} className="border-neutral-300">
