@@ -45,7 +45,7 @@ export default function Home() {
   }, [links]);
 
   return (
-    <div className="grid grid-rows-2 lg:grid-cols-2 gap-8 w-full min-w-fit">
+    <div className="grid lg:grid-cols-2 gap-8 w-full min-w-fit">
       <div>
         <div className="border border-neutral-300 rounded-md">
           <table className="w-full overflow-hidden">
