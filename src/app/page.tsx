@@ -52,7 +52,7 @@ export default function Home() {
       <div className="truncate">
         <div className="border border-neutral-300 rounded-md">
           <h2 className="text-center font-medium py-2">Liens</h2>
-          <table className="w-full">
+          <table className="w-full overflow-hidden">
             {/* <thead>
               <tr className="border-neutral-300 border-b">
                 <th className="text-left">Liens</th>
