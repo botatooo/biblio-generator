@@ -1,13 +1,6 @@
-import { format_authors, format_title } from "./formatting";
+import { format_authors } from "./formatting";
 
 const date_options = { year: 'numeric', month: 'long', day: 'numeric' } as const;
-
-interface ArticleData {
-  author: string;
-  siteName: string;
-  title: string;
-  url: string;
-}
 
 export const resolve_url_to_biblio = (article: ArticleData) => {
   const author = format_authors(article);

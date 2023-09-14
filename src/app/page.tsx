@@ -1,6 +1,5 @@
 "use client";
 
-import type { ArticleData } from "@extractus/article-extractor";
 import { resolve_url_to_biblio } from "@/helpers/resolver";
 import { useEffect, useState } from "react";
 

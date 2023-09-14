@@ -1,12 +1,5 @@
 import { is_human_name } from "./nlp";
 
-interface ArticleData {
-  author: string;
-  siteName: string;
-  title: string;
-  url: string;
-}
-
 const get_domain_name = (url: string) => {
   const urlObject = new URL(url);
   const domainWithTld = urlObject.hostname.replace("www.", "");
@@ -41,21 +34,21 @@ const get_site_name = (siteName: string | undefined, url: string | undefined) =>
   return "[s.l.]" // sans lieu
 }
 
-export const format_title = (title: string | undefined) => {
-  if (!title) {
-    return "[s.t.]" // sans titre
-  }
+// export const format_title = (title: string | undefined) => {
+//   if (!title) {
+//     return "[s.t.]" // sans titre
+//   }
 
-  for (const seperator of ["-", "—", "–", "|"]) {
-    if (title.includes(seperator)) {
-      const parts = title.split(seperator)
-      const longest_part = parts.sort((a, b) => b.length - a.length)[0]
-      return longest_part.trim()
-    }
-  }
+//   for (const seperator of ["-", "—", "–", "|"]) {
+//     if (title.includes(seperator)) {
+//       const parts = title.split(seperator)
+//       const longest_part = parts.sort((a, b) => b.length - a.length)[0]
+//       return longest_part.trim()
+//     }
+//   }
 
-  return title.trim()
-}
+//   return title.trim()
+// }
 
 
 export const format_authors = (article: ArticleData) => {
@@ -78,10 +71,8 @@ export const format_authors = (article: ArticleData) => {
   if (is_human_name(author)) {
     const [first, ...last] = author.split(" ");
     return last.join(" ").toUpperCase() + ", " + first;
-  } else {
-    // if the first author is an organization, format it as "ORGANIZATION"
-    return author.toUpperCase();
   }
 
-  return author
+  // if the first author is an organization, format it as "ORGANIZATION"
+  return author.toUpperCase();
 }
