@@ -1,3 +1,4 @@
+import { resolve_url_to_biblio } from '@/helpers/resolver';
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from "jsdom";
 import { NextResponse } from 'next/server';
@@ -37,5 +38,9 @@ export async function GET(request: Request) {
     };
   }));
 
-  return jsonResponse(articles.filter(Boolean));
+  // return jsonResponse(articles.filter(Boolean));
+
+  const biblios = articles.map((article) => article ? resolve_url_to_biblio(article) : "").filter(Boolean);
+
+  return jsonResponse(biblios);
 }

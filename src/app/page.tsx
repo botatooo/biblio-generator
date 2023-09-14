@@ -40,12 +40,12 @@ export default function Home() {
     links.forEach((link) => url.searchParams.append("url", link));
 
     fetch(url).then(async (res) => {
-      const data: ArticleData[] = await res.json();
+      const data: string[] = await res.json();
       if (!Array.isArray(data)) return;
 
-      const localBiblio = data.map((article) => resolve_url_to_biblio(article));
+      // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
-      setBiblio(localBiblio);
+      setBiblio(data);
     });
   }, [links]);
 
