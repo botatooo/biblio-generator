@@ -10,19 +10,25 @@ export default function Home() {
     ) as HTMLInputElement | null;
     if (!input) return;
 
-    try {
-      new URL(input.value);
-    } catch {
-      alert("L'url n'est pas valide!");
-      return;
-    }
-
-    setLinks([...links, input.value]);
+    addLink(input.value);
     input.value = "";
   };
 
   const [links, setLinks] = useState([] as string[]);
   const [biblio, setBiblio] = useState([] as string[]);
+
+  const addLink = (link: string) => {
+    let url: URL;
+    try {
+      url = new URL(link);
+    } catch {
+      alert("L'url n'est pas valide!");
+      return;
+    }
+
+    url.search = "";
+    setLinks([...links, url.toString()]);
+  };
 
   useEffect(() => {
     const url = new URL("/api/article", location.href);
