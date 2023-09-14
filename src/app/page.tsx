@@ -18,7 +18,7 @@ export default function Home() {
   const [biblio, setBiblio] = useState([] as string[]);
 
   const addLink = (link: string) => {
-    if (!link.startsWith("http://") || !link.startsWith("https://")) {
+    if (!link.startsWith("http")) {
       link = "https://" + link;
     }
 
@@ -53,7 +53,7 @@ export default function Home() {
     <div className="grid lg:grid-cols-2 gap-8 w-full min-w-fit">
       <div>
         <div className="border border-neutral-300 rounded-md">
-          <table className="w-full overflow-hidden">
+          <table className="w-full overflow-hidden break-all">
             <thead>
               <tr className="rounded-t-md">
                 <th className="text-center font-medium py-2">Liens</th>
