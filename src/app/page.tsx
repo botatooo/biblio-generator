@@ -31,6 +31,7 @@ export default function Home() {
     }
 
     url.search = "";
+    url.hash = "";
     setLinks([...links, url.toString()]);
   };
 
