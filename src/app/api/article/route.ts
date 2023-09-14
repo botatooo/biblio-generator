@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2023 Adnan-Aidan Taha
- */
-
 import { extract } from '@extractus/article-extractor';
 import { NextResponse } from 'next/server';
 

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2023 Adnan-Aidan Taha
- */
-
 import type { ArticleData } from "@extractus/article-extractor";
 import { is_human_name } from "./nlp";
 

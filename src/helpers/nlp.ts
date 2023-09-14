@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2023 Adnan-Aidan Taha
- */
-
 import nlp from "compromise";
 
 

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2023 Adnan-Aidan Taha
- */
-
 import type { ArticleData } from "@extractus/article-extractor";
 import { format_authors, format_title } from "./formatting";
 
