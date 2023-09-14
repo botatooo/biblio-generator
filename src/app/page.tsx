@@ -18,7 +18,9 @@ export default function Home() {
   const [biblio, setBiblio] = useState([] as string[]);
 
   const addLink = (link: string) => {
-    if (!link.startsWith("http")) link = "https://" + link;
+    if (!link.startsWith("http://") || !link.startsWith("https://")) {
+      link = "https://" + link;
+    }
 
     let url: URL;
     try {
