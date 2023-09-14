@@ -31,6 +31,8 @@ export default function Home() {
 
     fetch(url).then(async (res) => {
       const data: ArticleData[] = await res.json();
+      if (!Array.isArray(data)) return;
+
       const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
       setBiblio(localBiblio);
@@ -38,7 +40,7 @@ export default function Home() {
   }, [links]);
 
   return (
-    <div className="grid grid-rows-2 lg:grid-cols-2 gap-8 w-full truncate">
+    <div className="grid grid-rows-2 lg:grid-cols-2 gap-8 w-full min-w-fit">
       <div className="border-neutral-300 rounded-md border p-4 max-w-full">
         <h2 className="text-center font-bold underline">Bibliographie</h2>
         <ul className="pl-6 list-disc">
@@ -49,15 +51,14 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      <div className="truncate">
+      <div>
         <div className="border border-neutral-300 rounded-md">
-          <h2 className="text-center font-medium py-2">Liens</h2>
           <table className="w-full overflow-hidden">
-            {/* <thead>
-              <tr className="border-neutral-300 border-b">
-                <th className="text-left">Liens</th>
+            <thead>
+              <tr className="rounded-t-md">
+                <th className="text-center font-medium py-2">Liens</th>
               </tr>
-            </thead> */}
+            </thead>
             <tbody>
               {links.length > 0 ? (
                 links.map((link, index) => (

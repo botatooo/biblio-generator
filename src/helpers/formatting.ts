@@ -1,5 +1,11 @@
-import type { ArticleData } from "@extractus/article-extractor";
 import { is_human_name } from "./nlp";
+
+interface ArticleData {
+  author: string;
+  siteName: string;
+  title: string;
+  url: string;
+}
 
 const get_domain_name = (url: string) => {
   const urlObject = new URL(url);
@@ -14,17 +20,21 @@ const get_domain_name = (url: string) => {
   return domainParts[domainParts.length - 3];
 }
 
-const get_site_name = (title: string | undefined, url: string | undefined) => {
+const get_site_name = (siteName: string | undefined, url: string | undefined) => {
   // try to extract website name from title
-  for (const seperator of ["-", "—", "–", "|"]) {
-    if (typeof title !== "undefined" && title.includes(seperator)) {
-      const parts = title.split(seperator)
-      const shortest_part = parts.sort((a, b) => a.length - b.length)[0]
-      return shortest_part.trim()
-    }
+  // for (const seperator of ["-", "—", "–", "|"]) {
+  //   if (typeof title !== "undefined" && title.includes(seperator)) {
+  //     const parts = title.split(seperator)
+  //     const shortest_part = parts.sort((a, b) => a.length - b.length)[0]
+  //     return shortest_part.trim()
+  //   }
+  // }
+
+  if (siteName) {
+    return siteName
   }
 
-  if (typeof url !== "undefined") { // if not possible, extract from url (domain name)
+  if (url) { // if not possible, extract from url (domain name)
     return get_domain_name(url)
   }
 
@@ -52,22 +62,25 @@ export const format_authors = (article: ArticleData) => {
   // Formats an array of authors into a string according to the rules specified in the 2023 - 2024 edition of Montreal International School's "Guide de présentation des travaux écrits".
 
   let author = article.author;
-  const site = get_site_name(article.title, article.url);
+  const site = get_site_name(article.siteName, article.url);
 
   // if there are no authors, return the site name (which is also the organization name)
   if (!author) {
     return site.toUpperCase();
   }
 
-  // just in case newspaper3k catches the author's name wrong
-  if (author.toLowerCase().startsWith("par") || author.toLowerCase().startsWith("by")) {
-    author = author.split(" ").slice(1).join(" ");
-  }
+  // just in case we catche the author's name wrong
+  // if (author.toLowerCase().startsWith("par") || author.toLowerCase().startsWith("by")) {
+  //   author = author.split(" ").slice(1).join(" ");
+  // }
 
   // if the first author is a person, format it as "LAST, First"
   if (is_human_name(author)) {
     const [first, ...last] = author.split(" ");
     return last.join(" ").toUpperCase() + ", " + first;
+  } else {
+    // if the first author is an organization, format it as "ORGANIZATION"
+    return author.toUpperCase();
   }
 
   return author
