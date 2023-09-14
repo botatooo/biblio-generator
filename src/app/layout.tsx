@@ -35,7 +35,7 @@ export default function RootLayout({
               </li>
             </ol>
           </nav>
-          <main className="flex flex-col items-center justify-between px-20 lg:px-28 pt-28 pb-20 h-screen w-screen">
+          <main className="flex flex-col items-center justify-between px-12 md:px-20 lg:px-28 pt-28 pb-20 h-screen w-screen">
             {children}
           </main>
         </div>
