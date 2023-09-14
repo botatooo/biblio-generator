@@ -18,7 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className={clsx(inter.className, "bg-neutral-100")}>
+      <body
+        className={clsx(inter.className, "bg-neutral-100 w-screen h-screen")}
+      >
         <div className="flex flex-col">
           <nav className="flex absolute flex-row items-center content-around flex-wrap text-white bg-teal-500 p-6 h-20 w-full">
             <h1 className="hidden sm:block font-semibold text-xl tracking-tight">
