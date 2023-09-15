@@ -34,7 +34,7 @@ export default function RootLayout({
                 <a href="/">Accueil</a>
               </li>
               <li className="pl-8">
-                <a href="/about">A propos</a>
+                <a href="/a-propos">À propos</a>
               </li>
             </ol>
           </nav>

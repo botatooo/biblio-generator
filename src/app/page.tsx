@@ -1,6 +1,5 @@
 "use client";
 
-import { resolve_url_to_biblio } from "@/helpers/resolver";
 import { useEffect, useState } from "react";
 
 export default function Home() {
