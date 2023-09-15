@@ -1,8 +1,9 @@
 # Biblio Generator
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbotatooo%2Fbiblio-generator)
 
-
 ## English
+
+> A tool to assist tired IB students in making their bibliographies
 
 ### Getting started
 
@@ -27,6 +28,8 @@ To learn more about Next.js, take a look at the following resources:
 To learn more about web developpment in general, freeCodeCamp has [a good list of resources to learn from](https://www.freecodecamp.org/news/learn-web-development-free-full-stack-developer-courses-for-beginners).
 
 ## Français
+
+> Un outil pour aider les élèves IB fatigués à rédiger leurs bibliographies
 
 ### Pour commencer
 
