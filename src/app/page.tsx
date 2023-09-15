@@ -14,7 +14,8 @@ export default function Home() {
     input.value = "";
   };
 
-  const [links, setLinks] = useState([] as string[]);
+  const links = [];
+  const [newestLink, setNewestLink] = useState("");
   const [biblio, setBiblio] = useState([] as string[]);
 
   const addLink = (link: string) => {
@@ -32,12 +33,13 @@ export default function Home() {
 
     url.search = "";
     url.hash = "";
-    setLinks([...links, url.toString()]);
+    links.push(url.toString());
+    setNewestLink(url.toString());
   };
 
   useEffect(() => {
     const url = new URL("/api/article", location.href);
-    links.forEach((link) => url.searchParams.append("url", link));
+    url.searchParams.append("url", newestLink);
 
     fetch(url).then(async (res) => {
       const data: string[] = await res.json();
@@ -45,9 +47,9 @@ export default function Home() {
 
       // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
-      setBiblio(data);
+      setBiblio([...biblio, ...data]);
     });
-  }, [links]);
+  }, [newestLink]);
 
   return (
     <div className="grid lg:grid-cols-2 gap-8 w-full min-w-fit">
