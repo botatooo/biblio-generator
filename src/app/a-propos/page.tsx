@@ -38,22 +38,20 @@ export default function About() {
             />
           </a>
         </p>
-        <p className="text-2xl">
-          Contributeurs:{" "}
-          <ul>
-            <li className="list-disc ml-8">
-              Bill Xu &quot;BX&quot;
-              <a href="https://github.com/bx07">
-                <img
-                  alt="GitHub"
-                  src="https://skillicons.dev/icons?i=github"
-                  loading="lazy"
-                  className="w-8 h-8 ml-1 mb-1 inline-block"
-                />
-              </a>
-            </li>
-          </ul>
-        </p>
+        <p className="text-2xl">Contributeurs:</p>
+        <ul className="text-2xl list-disc">
+          <li className="ml-8">
+            Bill Xu &quot;BX&quot;
+            <a href="https://github.com/bx07">
+              <img
+                alt="GitHub"
+                src="https://skillicons.dev/icons?i=github"
+                loading="lazy"
+                className="w-8 h-8 ml-1 mb-1 inline-block"
+              />
+            </a>
+          </li>
+        </ul>
         <br />
         <p className="text-2xl">
           Le code source est disponible sur{" "}
