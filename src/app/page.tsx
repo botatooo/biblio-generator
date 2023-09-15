@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SpinnerCircular } from "spinners-react";
 
 export default function Home() {
   const onClick = () => {
@@ -12,6 +13,8 @@ export default function Home() {
     addLink(input.value);
     input.value = "";
   };
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [links, setLinks] = useState([] as string[]);
   const [newestLink, setNewestLink] = useState("");
@@ -42,14 +45,17 @@ export default function Home() {
     const url = new URL("/api/article", location.href);
     url.searchParams.append("url", newestLink);
 
-    fetch(url).then(async (res) => {
-      const data: string[] = await res.json();
-      if (!Array.isArray(data) || data.length === 0) return;
+    setIsLoading(true);
+    fetch(url)
+      .then(async (res) => {
+        const data: string[] = await res.json();
+        if (!Array.isArray(data) || data.length === 0) return;
 
-      // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
+        // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
-      setBiblio((prev) => [...prev, ...data]);
-    });
+        setBiblio((prev) => [...prev, ...data]);
+      })
+      .then(() => setIsLoading(false));
   }, [newestLink]);
 
   return (
@@ -99,6 +105,14 @@ export default function Home() {
       <div className="border-neutral-300 rounded-md border p-4 max-w-full">
         <h2 className="text-center font-bold underline leading-relaxed">
           Bibliographie
+          <SpinnerCircular
+            enabled={isLoading}
+            className="ml-2 inline-block"
+            size={20}
+            thickness={300}
+            color="rgb(20 184 166)" // teal-500
+            secondaryColor="transparent"
+          />
         </h2>
         <ul className="pl-6 list-disc">
           {biblio.map((source, index) => (
