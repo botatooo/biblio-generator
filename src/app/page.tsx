@@ -14,7 +14,7 @@ export default function Home() {
     input.value = "";
   };
 
-  const links = [];
+  const [links, setLinks] = useState([] as string[]);
   const [newestLink, setNewestLink] = useState("");
   const [biblio, setBiblio] = useState([] as string[]);
 
@@ -33,17 +33,19 @@ export default function Home() {
 
     url.search = "";
     url.hash = "";
-    links.push(url.toString());
+    setLinks((prev) => [...prev, url.toString()]);
     setNewestLink(url.toString());
   };
 
   useEffect(() => {
+    if (!newestLink) return;
+
     const url = new URL("/api/article", location.href);
     url.searchParams.append("url", newestLink);
 
     fetch(url).then(async (res) => {
       const data: string[] = await res.json();
-      if (!Array.isArray(data)) return;
+      if (!Array.isArray(data) || data.length === 0) return;
 
       // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 

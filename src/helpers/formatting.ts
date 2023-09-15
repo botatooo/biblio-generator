@@ -34,21 +34,25 @@ const get_site_name = (siteName: string | undefined, url: string | undefined) =>
   return "[s.l.]"; // sans lieu
 };
 
-// export const format_title = (title: string | undefined) => {
-//   if (!title) {
-//     return "[s.t.]" // sans titre
-//   }
+export const format_title = (title: string | undefined) => {
+  if (!title) {
+    return "[s.t.]"; // sans titre
+  }
 
-//   for (const seperator of ["-", "—", "–", "|"]) {
-//     if (title.includes(seperator)) {
-//       const parts = title.split(seperator)
-//       const longest_part = parts.sort((a, b) => b.length - a.length)[0]
-//       return longest_part.trim()
-//     }
-//   }
+  for (const seperator of ["-", "—", "–", "|"]) {
+    if (title.includes(seperator)) {
+      const parts = title.split(seperator);
+      const longest_part = parts.sort((a, b) => b.length - a.length)[0];
+      return longest_part.trim();
+    }
+  }
 
-//   return title.trim()
-// }
+  if (!title.endsWith(".")) {
+    title += ".";
+  }
+
+  return title.trim();
+};
 
 
 export const format_authors = (article: ArticleData) => {
