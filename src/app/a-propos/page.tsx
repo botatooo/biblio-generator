@@ -27,15 +27,7 @@ export default function About() {
               alt="GitHub"
               src="https://skillicons.dev/icons?i=github"
               loading="lazy"
-              className="w-8 h-8 inline-block"
-            />
-          </a>
-          <a href="https://github.com/botatooo">
-            <img
-              alt="GitHub"
-              src="https://skillicons.dev/icons?i=email"
-              loading="lazy"
-              className="w-8 h-8 inline-block"
+              className="w-6 h-6 inline-block"
             />
           </a>
         </p>
@@ -48,7 +40,7 @@ export default function About() {
                 alt="GitHub"
                 src="https://skillicons.dev/icons?i=github"
                 loading="lazy"
-                className="w-8 h-8 ml-1 mb-1 inline-block"
+                className="w-6 h-6 ml-1 mb-1 inline-block"
               />
             </a>
           </li>
@@ -64,7 +56,7 @@ export default function About() {
               alt=""
               src="https://skillicons.dev/icons?i=github"
               loading="lazy"
-              className="w-6 h-6 mr-1 mb-1 inline-block text-center"
+              className="w-4 h-4 mr-1 mb-1 inline-block text-center"
             />
             GitHub
           </a>
@@ -79,7 +71,7 @@ export default function About() {
               alt=""
               src="https://skillicons.dev/icons?i=vercel"
               loading="lazy"
-              className="w-6 h-6 mr-1 mb-1 inline-block text-center"
+              className="w-4 h-4 mr-1 mb-1 inline-block text-center"
             />
             Vercel
           </a>
