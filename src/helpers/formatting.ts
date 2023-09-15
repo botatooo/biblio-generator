@@ -11,7 +11,7 @@ const get_domain_name = (url: string) => {
 
   // assume that the domain is in the format domain.tld.sld
   return domainParts[domainParts.length - 3];
-}
+};
 
 const get_site_name = (siteName: string | undefined, url: string | undefined) => {
   // try to extract website name from title
@@ -24,15 +24,15 @@ const get_site_name = (siteName: string | undefined, url: string | undefined) =>
   // }
 
   if (siteName) {
-    return siteName
+    return siteName;
   }
 
   if (url) { // if not possible, extract from url (domain name)
-    return get_domain_name(url)
+    return get_domain_name(url);
   }
 
-  return "[s.l.]" // sans lieu
-}
+  return "[s.l.]"; // sans lieu
+};
 
 // export const format_title = (title: string | undefined) => {
 //   if (!title) {
@@ -75,4 +75,4 @@ export const format_authors = (article: ArticleData) => {
 
   // if the first author is an organization, format it as "ORGANIZATION"
   return author.toUpperCase();
-}
+};

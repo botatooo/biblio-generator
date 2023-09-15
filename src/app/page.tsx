@@ -47,7 +47,7 @@ export default function Home() {
 
       // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
-      setBiblio([...biblio, ...data]);
+      setBiblio((prev) => [...prev, ...data]);
     });
   }, [newestLink]);
 

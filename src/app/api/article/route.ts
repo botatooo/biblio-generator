@@ -1,7 +1,7 @@
-import { resolve_url_to_biblio } from '@/helpers/resolver';
-import { Readability } from '@mozilla/readability';
+import { resolve_url_to_biblio } from "@/helpers/resolver";
+import { Readability } from "@mozilla/readability";
 import { JSDOM } from "jsdom";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // export const runtime = 'edge';
 
@@ -17,9 +17,9 @@ const jsonResponse = (data: any, options: ResponseInit = { status: 200 }) => Nex
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const links = searchParams.getAll('url');
+  const links = searchParams.getAll("url");
   if (!links || links.length === 0) {
-    return jsonResponse({ error: 'Missing url parameter' }, { status: 400 });
+    return jsonResponse({ error: "Missing url parameter" }, { status: 400 });
   }
 
   const articles = await Promise.all(links.map(async (url) => {
