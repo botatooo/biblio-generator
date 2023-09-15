@@ -8,11 +8,11 @@ export default function About() {
         <p className="text-2xl">Generatrice de bibliographie</p>
         <p className="text-2xl">
           Version{" "}
-          {process.env.VERCEL_GIT_COMMIT_SHA ? (
+          {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ? (
             <a
               href={`https://github.com/botatooo/biblio-generator/tree/${process.env.VERCEL_GIT_COMMIT_SHA}`}
             >
-              {process.env.VERCEL_GIT_COMMIT_SHA.slice(0, 5)}
+              {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 5)}
             </a>
           ) : (
             "inconnue"
