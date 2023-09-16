@@ -76,6 +76,21 @@ export default function About() {
             Vercel
           </a>
         </p>
+        <p className="text-l">
+          Icons fournis par{" "}
+          <a
+            href="https://skillicons.dev"
+            className="text-blue-500 hover:underline"
+          >
+            <img
+              alt=""
+              src="https://skillicons.dev/favicon.png"
+              loading="lazy"
+              className="w-4 h-4 mr-1 mb-1 inline-block text-center rounded-sm"
+            />
+            Skill Icons
+          </a>
+        </p>
       </div>
     </div>
   );
