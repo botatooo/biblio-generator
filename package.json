@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
+  "name": "biblio-generator",
+  "author": "Adnan-Aidan Taha",
+  "description": "A tool to assist tired IB students in making their bibliographies.",
+  "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

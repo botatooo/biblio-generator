@@ -7,6 +7,5 @@ export const resolve_url_to_biblio = (article: ArticleData) => {
   const title = format_title(article.title);
   const today = new Date().toLocaleDateString("fr-CA", date_options);
 
-
   return `${author}. (Page consultée le ${today}). ${title} [En ligne]. Adresse URL : ${article.url}.`;
 };

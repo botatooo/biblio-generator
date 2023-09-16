@@ -17,6 +17,7 @@ const jsonResponse = (data: any, options: ResponseInit = { status: 200 }) => Nex
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+
   const links = searchParams.getAll("url");
   if (!links || links.length === 0) {
     return jsonResponse({ error: "Missing url parameter" }, { status: 400 });
@@ -37,8 +38,6 @@ export async function GET(request: Request) {
       url,
     };
   }));
-
-  // return jsonResponse(articles.filter(Boolean));
 
   const biblios = articles.map((article) => article ? resolve_url_to_biblio(article) : "").filter(Boolean);
 

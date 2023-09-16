@@ -1,33 +1,24 @@
 import { is_human_name } from "./nlp";
 
-const get_domain_name = (url: string) => {
-  const urlObject = new URL(url);
-  const domainWithTld = urlObject.hostname.replace("www.", "");
-  const domainParts = domainWithTld.split(".");
+const get_domain_name = (link: string) => {
+  const url = new URL(link);
+  const domainParts = url.hostname.replace("www.", "").split(".");
 
   if (domainParts.length === 2) {
     return domainParts[0];
   }
 
-  // assume that the domain is in the format domain.tld.sld
+  // assume that the domain is in the format 'domain.tld.sld'
   return domainParts[domainParts.length - 3];
 };
 
 const get_site_name = (siteName: string | undefined, url: string | undefined) => {
-  // try to extract website name from title
-  // for (const seperator of ["-", "—", "–", "|"]) {
-  //   if (typeof title !== "undefined" && title.includes(seperator)) {
-  //     const parts = title.split(seperator)
-  //     const shortest_part = parts.sort((a, b) => a.length - b.length)[0]
-  //     return shortest_part.trim()
-  //   }
-  // }
-
   if (siteName) {
     return siteName;
   }
 
-  if (url) { // if not possible, extract from url (domain name)
+  // if not possible, extract from url (domain name)
+  if (url) {
     return get_domain_name(url);
   }
 
@@ -47,17 +38,18 @@ export const format_title = (title: string | undefined) => {
     }
   }
 
-  if (!title.endsWith(".")) {
-    title += ".";
+  if (!title.trim().endsWith(".")) {
+    title = title.trim() + ".";
   }
 
-  return title.trim();
+  return title;
 };
 
 
+/**
+ * Formats an array of authors into a string according to the rules specified in the 2023-2024 edition of Montreal International School's "Guide de présentation des travaux écrits".
+ */
 export const format_authors = (article: ArticleData) => {
-  // Formats an array of authors into a string according to the rules specified in the 2023 - 2024 edition of Montreal International School's "Guide de présentation des travaux écrits".
-
   let author = article.author;
   const site = get_site_name(article.siteName, article.url);
 
