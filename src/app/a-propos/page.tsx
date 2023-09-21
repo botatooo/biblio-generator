@@ -10,7 +10,7 @@ export default function About() {
           Version{" "}
           {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ? (
             <a
-              href={`https://github.com/botatooo/biblio-generator/tree/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
+              href={`https://github.com/botatooo/biblio-generator/commit/${process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}`}
               className="text-blue-500 hover:underline"
             >
               {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 6)}
