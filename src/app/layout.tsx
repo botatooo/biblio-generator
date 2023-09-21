@@ -1,10 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { inter } from "./fonts";
 import clsx from "clsx";
 import React from "react";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Generatrice de Bibliographie",
@@ -19,7 +17,12 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={clsx(inter.className, "bg-neutral-100 w-screen h-screen")}
+        className={clsx(
+          inter.variable,
+          "font-sans",
+          "bg-neutral-100",
+          "w-screen h-screen"
+        )}
       >
         <div className="flex flex-col">
           <nav className="flex absolute flex-row items-center content-around flex-wrap text-white bg-teal-500 p-6 h-20 w-full">

@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+import { roboto_mono } from "./fonts";
 import { useEffect, useState } from "react";
 import { SpinnerCircular } from "spinners-react";
 
@@ -68,21 +70,19 @@ export default function Home() {
                 <th className="text-center font-medium py-2">Liens</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={clsx(roboto_mono.variable, "font-mono")}>
               {links.length > 0 ? (
                 links.map((link, index) => (
                   <tr
                     key={index}
                     className="border-neutral-300 border-t even:bg-teal-100"
                   >
-                    <td className="font-mono p-2">{link}</td>
+                    <td className="p-2">{link}</td>
                   </tr>
                 ))
               ) : (
                 <tr className="border-neutral-300 border-t even:bg-teal-100">
-                  <td className="font-mono p-2">
-                    Ajoutez un lien pour commencer!
-                  </td>
+                  <td className="p-2">Ajoutez un lien pour commencer!</td>
                 </tr>
               )}
             </tbody>
