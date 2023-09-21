@@ -1,9 +1,10 @@
 "use client";
 
 import clsx from "clsx";
-import { roboto_mono } from "./fonts";
 import { useEffect, useState } from "react";
 import { SpinnerCircular } from "spinners-react";
+
+import { roboto_mono } from "@/app/fonts";
 
 export default function Home() {
   const onClick = () => {

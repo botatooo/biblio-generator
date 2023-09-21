@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.2",
     "eslint": "8.49.0",
-    "eslint-config-next": "13.4.19"
+    "eslint-config-next": "13.4.19",
+    "eslint-plugin-simple-import-sort": "^10.0.0"
   }
 }

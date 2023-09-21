@@ -1,8 +1,10 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { inter } from "./fonts";
+
 import clsx from "clsx";
+import type { Metadata } from "next";
 import React from "react";
+
+import { inter } from "@/app/fonts";
 
 export const metadata: Metadata = {
   title: "Generatrice de Bibliographie",

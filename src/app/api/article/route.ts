@@ -1,7 +1,8 @@
-import { resolve_url_to_biblio } from "@/helpers/resolver";
 import { Readability } from "@mozilla/readability";
 import { JSDOM } from "jsdom";
 import { NextResponse } from "next/server";
+
+import { resolve_url_to_biblio } from "@/helpers/resolver";
 
 // export const runtime = 'edge';
 

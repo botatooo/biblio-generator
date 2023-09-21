@@ -5,6 +5,9 @@
     "semi": ["error", "always"],
     "quotes": ["error", "double"],
     "indent": ["error", 2],
-    "comma-dangle": ["error", "always-multiline"]
-  }
+    "comma-dangle": ["error", "always-multiline"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  },
+  "plugins": ["simple-import-sort"]
 }
