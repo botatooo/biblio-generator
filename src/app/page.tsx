@@ -19,7 +19,7 @@ export default function Home() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errors, setErrors] = useState([] as string[]);
+  const [errors, setErrors] = useState([] as { url: string; error: string }[]);
   const [links, setLinks] = useState([] as string[]);
   const [newestLink, setNewestLink] = useState("");
   const [biblio, setBiblio] = useState([] as string[]);
@@ -53,7 +53,10 @@ export default function Home() {
     fetch(url)
       .then(async (res) => {
         if (!res.ok) {
-          setErrors((prev) => [`${res.status} ${res.statusText}`, ...prev]);
+          setErrors((prev) => [
+            { url: newestLink, error: res.statusText },
+            ...prev,
+          ]);
           console.error(res);
           setIsLoading(false);
         }
@@ -125,14 +128,12 @@ export default function Home() {
         </h2>
         <ul className="pl-6 list-disc">
           {errors.map((error, index) => (
-            <li key={index} className="list-none border-red-300">
-              {error}
+            <li key={index} className="text-red-400">
+              {error.url}: {error.error}
             </li>
           ))}
           {biblio.map((source, index) => (
-            <li key={index} className="border-neutral-300">
-              {source}
-            </li>
+            <li key={index}>{source}</li>
           ))}
         </ul>
       </div>
