@@ -25,7 +25,9 @@ export async function GET(request: Request) {
   }
 
   const articles = await Promise.all(links.map(async (url) => {
-    const dom = await JSDOM.fromURL(url);
+    const dom = await JSDOM.fromURL(url, {
+      userAgent: request.headers.get("user-agent") || "",
+    });
     const data = new Readability(dom.window.document).parse();
 
     if (!data) {
