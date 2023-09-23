@@ -57,8 +57,9 @@ export default function Home() {
         // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
         setBiblio((prev) => [...prev, ...data]);
+        setIsLoading(false);
       })
-      .then(() => setIsLoading(false));
+      .catch(() => setIsLoading(false));
   }, [newestLink]);
 
   return (
