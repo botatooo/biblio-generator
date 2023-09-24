@@ -7,21 +7,10 @@ import { SpinnerCircular } from "spinners-react";
 import { roboto_mono } from "@/app/fonts";
 
 export default function Home() {
-  const onClick = () => {
-    const input = document.querySelector(
-      "input[name=url]"
-    ) as HTMLInputElement | null;
-    if (!input) return;
-
-    addLink(input.value);
-    input.value = "";
-  };
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState([] as { url: string; error: string }[]);
   const [links, setLinks] = useState([] as string[]);
-  const [newestLink, setNewestLink] = useState("");
   const [biblio, setBiblio] = useState([] as string[]);
 
   const addLink = (link: string) => {
@@ -40,11 +29,21 @@ export default function Home() {
     url.search = "";
     url.hash = "";
     setLinks((prev) => [...prev, url.toString()]);
-    setNewestLink(url.toString());
+  };
+
+  const onClick = () => {
+    const input = document.querySelector(
+      "input[name=url]"
+    ) as HTMLInputElement | null;
+    if (!input) return;
+
+    addLink(input.value);
+    input.value = "";
   };
 
   useEffect(() => {
-    if (!newestLink) return;
+    if (!links.length) return;
+    const newestLink = links[links.length - 1];
 
     const url = new URL("/api/article", location.href);
     url.searchParams.append("url", newestLink);
@@ -70,7 +69,7 @@ export default function Home() {
         setIsLoading(false);
       })
       .catch(console.error);
-  }, [newestLink]);
+  }, [links]);
 
   return (
     <div className="grid lg:grid-cols-2 gap-8 w-full min-w-fit">
@@ -104,6 +103,12 @@ export default function Home() {
           <input
             name="url"
             type="url"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter") return;
+              e.preventDefault();
+              onClick();
+            }}
             className="h-8 w-[calc(100%-5rem)] bg-none rounded-md"
           />
           <button
