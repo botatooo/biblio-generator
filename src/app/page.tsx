@@ -26,8 +26,8 @@ export default function Home() {
       return;
     }
 
-    url.search = "";
-    url.hash = "";
+    // url.search = "";
+    // url.hash = "";
     setLinks((prev) => [...prev, url.toString()]);
   };
 
