@@ -2,14 +2,17 @@ import { is_human_name } from "./nlp";
 
 const get_domain_name = (link: string) => {
   const url = new URL(link);
-  const domainParts = url.hostname.replace("www.", "").split(".");
+  const domainParts = url.hostname.split(".");
 
-  if (domainParts.length === 2) {
+  if (domainParts[1].length <= 3) {
+    // amazon.co.uk
+    // cssdm.gouv.qc.ca
+    // google.com
     return domainParts[0];
   }
 
-  // assume that the domain is in the format 'domain.tld.sld'
-  return domainParts[domainParts.length - 3];
+  // www.cbc.ca
+  return domainParts[1];
 };
 
 const get_site_name = (siteName: string | undefined, url: string | undefined) => {
@@ -19,7 +22,7 @@ const get_site_name = (siteName: string | undefined, url: string | undefined) =>
 
   // if not possible, extract from url (domain name)
   if (url) {
-    return get_domain_name(url);
+    return get_domain_name(url).replaceAll(/-_/g, " ");
   }
 
   return "[s.l.]"; // sans lieu
@@ -30,17 +33,12 @@ export const format_title = (title: string | undefined) => {
     return "[s.t.]"; // sans titre
   }
 
-  for (const seperator of ["-", "—", "–", "|"]) {
-    if (title.includes(seperator)) {
-      const parts = title.split(seperator);
-      const longest_part = parts.sort((a, b) => b.length - a.length)[0];
-      return longest_part.trim();
-    }
-  }
+  // if exported by office, remove the file extension
+  title = title.replace(/\.(?:xls|ppt|doc)x?$/, "");
 
-  if (!title.trim().endsWith(".")) {
-    title = title.trim() + ".";
-  }
+  title = title.trim();
+  const hasPunctuation = title.endsWith(".") || title.endsWith("!") || title.endsWith("?");
+  if (hasPunctuation) title = title.slice(0, -1);
 
   return title;
 };
@@ -65,7 +63,33 @@ export const format_authors = (article: ArticleData) => {
 
   // if the first author is a person, format it as "LAST, First"
   if (is_human_name(author)) {
-    const [first, ...last] = author.split(" ");
+    if (author.includes(",")) {
+      const [last, first] = author.split(",");
+      if (!last.trim() || !first.trim()) {
+        return author.trim();
+      }
+
+      return last.trim().toUpperCase() + ", " + first.trim();
+    }
+
+
+    const author_parts = author.split(" ");
+    if (author_parts[0] === author_parts[0].toUpperCase()) {
+      let first = [];
+      let last = [];
+      for (const part of author_parts) {
+        if (part === part.toUpperCase()) {
+          last.push(part);
+        } else {
+          first.push(part);
+        }
+      }
+
+      return last.join(" ") + ", " + first.join(" ");
+
+    }
+
+    const [first, ...last] = author_parts;
     return last.join(" ").toUpperCase() + ", " + first;
   }
 

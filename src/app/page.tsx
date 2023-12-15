@@ -5,65 +5,55 @@ import { useEffect, useState } from "react";
 import { SpinnerCircular } from "spinners-react";
 
 import { roboto_mono } from "@/app/fonts";
+import { useCheckMobileScreen } from "@/helpers/hooks";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errors, setErrors] = useState([] as { url: string; error: string }[]);
   const [links, setLinks] = useState([] as string[]);
-  const [biblio, setBiblio] = useState([] as string[]);
+  const [biblio, setBiblio] = useState(
+    [] as { success: boolean; content: any }[]
+  );
+  const [initialized, setInitialized] = useState(false);
 
-  const addLink = (link: string) => {
-    if (!link.startsWith("http")) {
-      link = "https://" + link;
+  const isMobile = useCheckMobileScreen(setInitialized);
+
+  const addLinks = (links: string[]) => {
+    for (const link of links) {
+      try {
+        new URL(link);
+      } catch {
+        alert("Un lien n'est pas valide!");
+        return false;
+      }
     }
 
-    let url: URL;
-    try {
-      url = new URL(link);
-    } catch {
-      alert("L'url n'est pas valide!");
-      return;
-    }
-
-    // url.search = "";
-    // url.hash = "";
-    setLinks((prev) => [...prev, url.toString()]);
+    setLinks((prev) => [...prev, ...links]);
+    return true;
   };
 
-  const onClick = () => {
-    const input = document.querySelector(
-      "input[name=url]"
-    ) as HTMLInputElement | null;
-    if (!input) return;
-
-    addLink(input.value);
-    input.value = "";
+  const addLink = (link: string) => {
+    return addLinks([link]);
   };
 
   useEffect(() => {
     if (!links.length) return;
-    const newestLink = links[links.length - 1];
 
     const url = new URL("/api/article", location.href);
-    url.searchParams.append("url", newestLink);
+    for (const link of links) {
+      url.searchParams.append("url", link);
+    }
 
     setIsLoading(true);
     fetch(url)
       .then(async (res) => {
         if (!res.ok) {
-          setErrors((prev) => [
-            { url: newestLink, error: res.statusText },
-            ...prev,
-          ]);
           console.error(res);
           setIsLoading(false);
         }
 
-        const data: string[] = await res.json();
+        const data: { success: boolean; content: string }[] = await res.json();
         if (!Array.isArray(data) || data.length === 0) return;
-
-        // const localBiblio = data.map((article) => resolve_url_to_biblio(article));
 
         setBiblio((prev) => [...prev, ...data]);
         setIsLoading(false);
@@ -72,75 +62,137 @@ export default function Home() {
   }, [links]);
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8 w-full min-w-fit">
-      <div>
-        <div className="border border-neutral-300 rounded-md">
-          <table className="w-full overflow-hidden break-all">
-            <thead>
-              <tr className="rounded-t-md">
-                <th className="text-center font-medium py-2">Liens</th>
-              </tr>
-            </thead>
-            <tbody className={clsx(roboto_mono.variable, "font-mono")}>
-              {links.length > 0 ? (
-                links.map((link, index) => (
-                  <tr
-                    key={index}
-                    className="border-neutral-300 border-t even:bg-teal-100"
-                  >
-                    <td className="p-2">{link}</td>
+    <div className="grid lg:grid-cols-2 gap-8 w-full max-w-full">
+      {initialized ? (
+        isMobile ? (
+          <div>
+            <div className="border border-neutral-300 rounded-md">
+              <table className="w-full overflow-hidden break-all">
+                <thead>
+                  <tr className="rounded-t-md">
+                    <th className="text-center font-medium py-2">Liens</th>
                   </tr>
-                ))
+                </thead>
+                <tbody className={clsx(roboto_mono.variable, "font-mono")}>
+                  {links.length > 0 ? (
+                    links.map((link, index) => (
+                      <tr
+                        key={index}
+                        className="border-neutral-300 border-t even:bg-teal-100"
+                      >
+                        <td className="p-2">{link}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-neutral-300 border-t even:bg-teal-100">
+                      <td className="p-2">Ajoutez un lien pour commencer!</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4 border-neutral-300 border rounded-md">
+              <input
+                name="url"
+                type="url"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key !== "Enter") return;
+                  e.preventDefault();
+
+                  if (addLink(e.currentTarget.value.trim())) {
+                    e.currentTarget.value = "";
+                  }
+                }}
+                className="h-8 w-[calc(100%-5rem)] bg-none rounded-md"
+              />
+              <button
+                onClick={(e) => {
+                  const input = e.currentTarget.previousElementSibling as
+                    | HTMLInputElement
+                    | undefined;
+                  if (!input) return;
+
+                  if (addLink(input.value.trim())) {
+                    input.value = "";
+                  }
+                }}
+                className="bg-teal-300 h-8 w-20 p-1 border rounded-md hover:bg-teal-200 float-right"
+              >
+                Ajouter
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className="border border-neutral-300 rounded-md">
+              <h1 className="text-center font-medium py-2">Liens</h1>
+              <textarea
+                name="urls"
+                tabIndex={0}
+                className="h-64 w-full border-t border-neutral-200"
+              />
+            </div>
+            <button
+              className="bg-teal-300 mt-2 py-1 px-2 border rounded-md hover:bg-teal-200 float-right"
+              onClick={() => {
+                const textarea = document.querySelector(
+                  "textarea[name=urls]"
+                ) as HTMLTextAreaElement | null;
+                console.log(textarea, textarea?.value);
+                if (!textarea) return;
+
+                const urls = textarea.value
+                  .split("\n")
+                  .map((url) => url.trim())
+                  .filter((url) => url !== "");
+
+                if (addLinks(urls)) {
+                  textarea.value = "";
+                }
+              }}
+            >
+              Ajouter les liens à la bibliographie
+            </button>
+          </div>
+        )
+      ) : (
+        <div />
+      )}
+      <div className="block  border-neutral-300 rounded-md border p-4 max-w-full overflow-hidden break-words">
+        <div className="font-['Times_New_Roman'] lg:text-[12px]">
+          <center>
+            <strong>Bibliographie</strong>
+            <SpinnerCircular
+              enabled={isLoading}
+              className="ml-2 inline-block"
+              size={15}
+              thickness={300}
+              color="rgb(20 184 166)" // teal-500
+              secondaryColor="transparent"
+            />
+          </center>
+          <br />
+          <strong>Document Internet</strong>
+          <br />
+          {biblio.map(({ success, content }, _index) => (
+            <>
+              {success ? (
+                <span>
+                  {content.author}. (Page consultée le {content.today}).{" "}
+                  <i>{content.title}</i>, [En ligne]. Adresse URL :{" "}
+                  <a href={content.url} className="underline text-sky-700">
+                    {content.url}
+                  </a>
+                </span>
               ) : (
-                <tr className="border-neutral-300 border-t even:bg-teal-100">
-                  <td className="p-2">Ajoutez un lien pour commencer!</td>
-                </tr>
+                // </Markdown>
+                <span className="text-red-500">{content}</span>
               )}
-            </tbody>
-          </table>
-        </div>
-        <div className="mt-4 border-neutral-300 border rounded-md">
-          <input
-            name="url"
-            type="url"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key !== "Enter") return;
-              e.preventDefault();
-              onClick();
-            }}
-            className="h-8 w-[calc(100%-5rem)] bg-none rounded-md"
-          />
-          <button
-            onClick={onClick}
-            className="bg-teal-300 h-8 w-20 p-1 border rounded-md hover:bg-teal-200 float-right"
-          >
-            Ajouter
-          </button>
-        </div>
-      </div>
-      <div className="border-neutral-300 rounded-md border p-4 max-w-full">
-        <h2 className="text-center font-bold underline leading-relaxed">
-          Bibliographie
-          <SpinnerCircular
-            enabled={isLoading}
-            className="ml-2 inline-block"
-            size={20}
-            thickness={300}
-            color="rgb(20 184 166)" // teal-500
-            secondaryColor="transparent"
-          />
-        </h2>
-        <ul className="pl-6 list-disc">
-          {errors.map((error, index) => (
-            <li key={index} className="text-red-400">
-              {error.url}: {error.error}
-            </li>
+              <br />
+            </>
           ))}
-          {biblio.map((source, index) => (
-            <li key={index}>{source}</li>
-          ))}
-        </ul>
+        </div>
       </div>
     </div>
   );

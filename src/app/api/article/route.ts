@@ -1,6 +1,7 @@
 import { Readability } from "@mozilla/readability";
 import { JSDOM } from "jsdom";
 import { NextResponse } from "next/server";
+import { resolvePDFJS } from "pdfjs-serverless";
 
 import { resolve_url_to_biblio } from "@/helpers/resolver";
 
@@ -25,24 +26,108 @@ export async function GET(request: Request) {
   }
 
   const articles = await Promise.all(links.map(async (url) => {
-    const dom = await JSDOM.fromURL(url, {
-      userAgent: request.headers.get("user-agent") || "",
-    });
-    const data = new Readability(dom.window.document).parse();
+    const urlObject = new URL(url);
 
-    if (!data) {
-      return null;
+    if (urlObject.pathname.endsWith(".pdf")) {
+      const { getDocument } = await resolvePDFJS();
+
+      const pdfBytes = await fetch(url).then((res) => res.arrayBuffer());
+
+      let pdf;
+      try {
+        pdf = await getDocument(pdfBytes).promise;
+      } catch (error) {
+        console.error("Failed to parse PDF", url, error);
+        return {
+          success: false,
+          url,
+        } as const;
+      }
+      
+      const metadata = await pdf.getMetadata();
+      let {Author, Title} = metadata.info as Record<string, string | undefined>;
+
+      console.log(Author, Title);
+
+      if (!Title) {
+        Title = urlObject.pathname.split("/").pop()
+          ?.replace(".pdf", "")
+          ?.replaceAll(/[-_]/g, " ");
+      }
+
+      return {
+        success: true,
+        author: Author || "",
+        siteName: urlObject.hostname.replace("www.", ""),
+        title: Title || "",
+        url,
+      };
+    }
+
+    let dom: JSDOM;
+    try {
+      dom = await JSDOM.fromURL(url, {
+        userAgent: request.headers.get("user-agent") || "",
+      });
+    } catch (error) {
+      return {
+        success: false,
+        url,
+      } as const;
+    }
+
+    if (["www.youtube.com", "youtube.com", "youtu.be"].includes(urlObject.hostname)) {
+      const videoId = urlObject.hostname === "youtu.be" ?
+        urlObject.pathname.slice(1) :
+        urlObject.searchParams.get("v");
+
+      const res = await fetch(`https://www.youtube.com/oembed?url=${url}&format=json`);
+      if (!res.ok) {
+        console.error("Failed to get YouTube video", url);
+        return {
+          success: false,
+          url,
+        } as const;
+      };
+
+      const data = await res.json();
+      const title = data.title;
+      const author = data.author_name;
+
+      return {
+        success: true,
+        author: author,
+        siteName: urlObject.hostname.replace("www.", ""),
+        title: title,
+        url,
+      };
+    }
+
+    const readabilityData = new Readability(dom.window.document).parse();
+    if (readabilityData) {
+      return {
+        success: true,
+        author: readabilityData.byline.trim(),
+        siteName: readabilityData.siteName,
+        title: readabilityData.title,
+        url,
+      };
     }
 
     return {
-      author: data.byline,
-      siteName: data.siteName,
-      title: data.title,
+      success: false,
       url,
-    };
+    } as const;
   }));
 
-  const biblios = articles.map((article) => article ? resolve_url_to_biblio(article) : "").filter(Boolean);
+  const biblios = articles
+    .filter(Boolean)
+    .map((article) => ({
+      success: article.success,
+      content: article.success
+        ? resolve_url_to_biblio(article)
+        : article.url,
+    }));
 
   return jsonResponse(biblios);
 }
