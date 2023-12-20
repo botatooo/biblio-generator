@@ -107,7 +107,7 @@ export async function GET(request: Request) {
     if (readabilityData) {
       return {
         success: true,
-        author: readabilityData.byline.trim(),
+        author: readabilityData.byline?.trim(),
         siteName: readabilityData.siteName,
         title: readabilityData.title,
         url,
