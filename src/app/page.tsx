@@ -28,7 +28,7 @@ export default function Home() {
       }
     }
 
-    setLinks((prev) => [...prev, ...links]);
+    setLinks(links);
     return true;
   };
 
@@ -160,7 +160,7 @@ export default function Home() {
         <div />
       )}
       <div className="block  border-neutral-300 rounded-md border p-4 max-w-full overflow-hidden break-words">
-        <div className="font-['Times_New_Roman'] lg:text-[12px]">
+        <div className="font-['Times_New_Roman'] text-[12px]">
           <center>
             <strong>Bibliographie</strong>
             <SpinnerCircular
