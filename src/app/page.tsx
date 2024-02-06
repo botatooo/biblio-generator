@@ -55,7 +55,8 @@ export default function Home() {
         const data: { success: boolean; content: string }[] = await res.json();
         if (!Array.isArray(data) || data.length === 0) return;
 
-        setBiblio((prev) => [...prev, ...data]);
+        // https://stackoverflow.com/a/9645447/19456595
+        setBiblio((prev) => [...prev, ...data].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())));
         setIsLoading(false);
       })
       .catch(console.error);
