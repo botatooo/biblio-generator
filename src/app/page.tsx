@@ -56,7 +56,7 @@ export default function Home() {
         if (!Array.isArray(data) || data.length === 0) return;
 
         // https://stackoverflow.com/a/9645447/19456595
-        setBiblio((prev) => [...prev, ...data].sort((a, b) => a.content.toLowerCase().localeCompare(b.content.toLowerCase())));
+        setBiblio((prev) => [...prev, ...data].sort((a, b) => a.content.author.toLowerCase().localeCompare(b.content.author.toLowerCase())));
         setIsLoading(false);
       })
       .catch(console.error);
