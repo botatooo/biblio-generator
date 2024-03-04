@@ -4,7 +4,6 @@ interface BiblioSucessfulResult {
     author: string;
     title: string;
     url: string;
-    today: string;
   }
 };
 

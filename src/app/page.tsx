@@ -180,7 +180,7 @@ export default function Home() {
             <>
               {success === true ? (
                 <span>
-                  {content.author}. (Page consultée le {content.today}).{" "}
+                  {content.author}. (Page consultée le {new Date().toLocaleDateString("fr-CA", { year: "numeric", month: "long", day: "numeric" })}).{" "}
                   <i>{content.title}</i>, [En ligne]. Adresse URL :{" "}
                   <a href={content.url} className="underline text-sky-700">
                     {content.url}
