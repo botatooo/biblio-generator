@@ -78,10 +78,6 @@ export async function GET(request: Request) {
     }
 
     if (["www.youtube.com", "youtube.com", "youtu.be"].includes(urlObject.hostname)) {
-      const videoId = urlObject.hostname === "youtu.be" ?
-        urlObject.pathname.slice(1) :
-        urlObject.searchParams.get("v");
-
       const res = await fetch(`https://www.youtube.com/oembed?url=${url}&format=json`);
       if (!res.ok) {
         console.error("Failed to get YouTube video", url);
@@ -123,7 +119,6 @@ export async function GET(request: Request) {
   }));
 
   const biblios = articles
-    .filter(Boolean)
     .map((article) => ({
       success: article.success,
       content: article.success

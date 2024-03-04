@@ -86,7 +86,6 @@ export const format_authors = (article: ArticleData) => {
       }
 
       return last.join(" ") + ", " + first.join(" ");
-
     }
 
     const [first, ...last] = author_parts;
