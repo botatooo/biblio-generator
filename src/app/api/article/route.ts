@@ -70,6 +70,7 @@ export async function GET(request: Request) {
         userAgent: request.headers.get("user-agent") || "",
       });
     } catch (error) {
+      console.error("Failed to parse HTML", url, error);
       return {
         success: false,
         url,
@@ -114,6 +115,7 @@ export async function GET(request: Request) {
       };
     }
 
+    console.error("Failed to parse article", url);
     return {
       success: false,
       url,
