@@ -12,7 +12,7 @@ export default function Home() {
 
   const [links, setLinks] = useState([] as string[]);
   const [biblio, setBiblio] = useState(
-    [] as { success: boolean; content: any }[]
+    [] as BiblioResult[]
   );
   const [initialized, setInitialized] = useState(false);
 
@@ -52,7 +52,7 @@ export default function Home() {
           setIsLoading(false);
         }
 
-        const data: { success: boolean; content: string }[] = await res.json();
+        const data: BiblioResult[] = await res.json();
         if (!Array.isArray(data) || data.length === 0) return;
 
         // https://stackoverflow.com/a/9645447/19456595
@@ -178,7 +178,7 @@ export default function Home() {
           <br />
           {biblio.map(({ success, content }, _index) => (
             <>
-              {success ? (
+              {success === true ? (
                 <span>
                   {content.author}. (Page consultée le {content.today}).{" "}
                   <i>{content.title}</i>, [En ligne]. Adresse URL :{" "}
